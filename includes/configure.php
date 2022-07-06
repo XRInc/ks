@@ -32,5 +32,5 @@ define('DB_CHARSET', 'utf8');
 define('DB_SERVER', 'ls-68ae4f5286535e918683b808da2fe76767d29c05.cm7vg81pk9jy.us-east-1.rds.amazonaws.com');
 define('DB_SERVER_USERNAME', 'dbmasteruser');
 define('DB_SERVER_PASSWORD', ',}J-[FEA<9.Y~a-TOpi]#KHcTN%?H0!f');
-define('DB_DATABASE', 'KV80WE');
+define('DB_DATABASE', 'KV79WE');
 define('DB_CACHE_METHOD', 'file');

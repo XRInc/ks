@@ -7,7 +7,7 @@ define('ENABLE_SSL', 'false');
 define('DIR_WS_CATALOG', '/');
 define('DIR_WS_CATALOG_IMAGES', HTTP_SERVER . DIR_WS_CATALOG . 'images/');
 define('DIR_WS_CATALOG_IMAGES_CACHE', DIR_WS_CATALOG_IMAGES . 'cache/');
-define('DIR_WS_ADMIN', DIR_WS_CATALOG . 'kv80we-manager_zp/');
+define('DIR_WS_ADMIN', DIR_WS_CATALOG . 'kv79we-manager/');
 define('DIR_WS_ADMIN_IMAGES', 'images/');
 
 //FS
@@ -33,9 +33,9 @@ define('DB_CHARSET', 'utf8');
 define('DB_SERVER', 'ls-68ae4f5286535e918683b808da2fe76767d29c05.cm7vg81pk9jy.us-east-1.rds.amazonaws.com');
 define('DB_SERVER_USERNAME', 'dbmasteruser');
 define('DB_SERVER_PASSWORD', ',}J-[FEA<9.Y~a-TOpi]#KHcTN%?H0!f');
-define('DB_DATABASE', 'KV80WE');
+define('DB_DATABASE', 'KV79WE');
 define('DB_CACHE_METHOD', 'file');
 
 //ADMIN
 define('ADMIN_USERNAME', 'manager');
-define('ADMIN_PASSWORD', 'npJp5xxX7tEv91uL80');
+define('ADMIN_PASSWORD', 'npJp5xxX7tEv91uL79');
