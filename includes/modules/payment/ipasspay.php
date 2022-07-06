@@ -179,6 +179,18 @@ HTML;
             $shipRegionCode = $orderInfo['shipping']['city'];
         }
 
+        // 多个ip切割为单个
+        if (isset($_SESSION['customer_ip_address']) && !empty($_SESSION['customer_ip_address'])){
+            $sourceIp = $_SESSION['customer_ip_address'];
+        } else {
+            $sourceIp = get_ip_address();
+        }
+
+        if (strpos($sourceIp, ',') != false) {
+            $sourceIpAtr = explode(',', $sourceIp);
+            $sourceIp    = reset($sourceIpAtr);
+        }
+
         $request_type = (((isset($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) == 'on' || $_SERVER['HTTPS'] == '1')))
             ||(isset($_SERVER['HTTP_X_FORWARDED_BY']) && strpos(strtoupper($_SERVER['HTTP_X_FORWARDED_BY']), 'SSL') !== false)
             ||(isset($_SERVER['HTTP_X_FORWARDED_HOST']) && (strpos(strtoupper($_SERVER['HTTP_X_FORWARDED_HOST']), 'SSL') !== false
@@ -198,7 +210,7 @@ HTML;
             'card_ex_year'    => $payment->get_is_inside() == 1 ? $_SESSION['ipasspay_card']['year'] : $_POST['ipasspay_card_year'],
             'card_ex_month'   => $payment->get_is_inside() == 1 ? $_SESSION['ipasspay_card']['month'] : $_POST['ipasspay_card_month'],
             'card_cvv'        => $payment->get_is_inside() == 1 ? $_SESSION['ipasspay_card']['cvv'] : $_POST['ipasspay_card_cvv'],
-            'source_ip'       => get_ip_address(),
+            'source_ip'       => $sourceIp,
             'source_url'      => $request_type == 'SSL' ? HTTPS_SERVER : HTTP_SERVER,
             'asyn_notify_url' => href_link('ipasspay_notify', '', 'SSL'),
             'syn_notify_url'  => href_link(FILENAME_CHECKOUT_RESULT, '', 'SSL'),
@@ -221,7 +233,6 @@ HTML;
             'ship_city'       => $orderInfo['shipping']['city'],
             'ship_street'     => $orderInfo['shipping']['street_address'],
             'ship_zip'        => $orderInfo['shipping']['postcode']
-
         );
 
         // 拼接参数获取密钥
