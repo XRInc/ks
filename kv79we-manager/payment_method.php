@@ -58,6 +58,7 @@ switch ($action) {
 				array('fieldName'=>'is_shield', 'value'=>$paymentMethod['is_shield'], 'type'=>'integer'),
 				array('fieldName'=>'is_pchidden', 'value'=>$paymentMethod['is_pchidden'], 'type' => 'integer'),
 				array('fieldName'=>'sort_order', 'value'=>$paymentMethod['sort_order'], 'type'=>'integer'),
+                array('fieldName'=>'order_max_amount', 'value'=>$paymentMethod['order_max_amount'], 'type'=>'integer'),
 				array('fieldName'=>'mark1', 'value'=>$paymentMethod['mark1'], 'type'=>'string'),
 				array('fieldName'=>'mark2', 'value'=>$paymentMethod['mark2'], 'type'=>'string'),
 				array('fieldName'=>'mark3', 'value'=>$paymentMethod['mark3'], 'type'=>'string')
@@ -102,7 +103,7 @@ switch ($action) {
 	default:
 		if ($payment_method_id > 0) {
 			$sql = "SELECT payment_method_id, code, name, description, account, md5key,
-						   submit_url, return_url, discount, status, is_inside, is_shield, is_pchidden,
+						   submit_url, return_url, discount, status, is_inside, is_shield, is_pchidden,order_max_amount,
 						   is_default, sort_order, mark1, mark2, mark3
 					FROM   " . TABLE_PAYMENT_METHOD . "
 					WHERE  payment_method_id = :payment_methodID";
@@ -125,6 +126,7 @@ switch ($action) {
 					'is_pchidden' => $result->fields['is_pchidden'],
 					'is_default'  => $result->fields['is_default'],
 					'sort_order'  => $result->fields['sort_order'],
+                    'order_max_amount'  => $result->fields['order_max_amount'],
 					'mark1'       => $result->fields['mark1'],
 					'mark2'       => $result->fields['mark2'],
 					'mark3'       => $result->fields['mark3']
@@ -260,6 +262,10 @@ switch ($action) {
 						<td class="label"><label for="payment_method-sort_order">排序</label></td>
 						<td class="value"><input type="text" class="input-text" value="<?php echo isset($paymentMethod['sort_order'])?$paymentMethod['sort_order']:'0'; ?>" name="payment_method[sort_order]" id="payment_method-sort_order" /></td>
 					</tr>
+                    <tr>
+                        <td class="label"><label for="payment_method-order_max_amount">最大付款金额</label></td>
+                        <td class="value"><input type="text" class="input-text" value="<?php echo isset($paymentMethod['order_max_amount'])?$paymentMethod['order_max_amount']:'0'; ?>" name="payment_method[order_max_amount]" id="payment_method-order_max_amount" /></td>
+                    </tr>
 					<tr>
 						<td class="label"><label for="payment_method-mark1">附加字段1</label></td>
 						<td class="value"><input type="text" class="input-text" value="<?php echo isset($paymentMethod['sort_order'])?$paymentMethod['mark1']:''; ?>" name="payment_method[mark1]" id="payment_method-mark1" /></td>

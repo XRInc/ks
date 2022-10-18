@@ -98,11 +98,11 @@
 </div>
 <script type="text/javascript"><!--
 $(function () {
-	<?php if (defined('FACEBOOK_ID') && strlen(FACEBOOK_ID) > 0) { ?>
-	$('#form-validate').validate({submitHandler:function(form){fbq('track', 'AddToCart');setTimeout(function(){form.submit();}, 1000);}});
-	<?php } else { ?>
-	$('#form-validate').validate();
-	<?php } ?>
+    $('#form-validate').validate({submitHandler:function(form){
+        <?php if (defined('FACEBOOK_ID') && strlen(FACEBOOK_ID) > 0) { ?> fbq('track', 'AddToCart'); <?php } ?>
+        <?php if (defined('TIKTOK_ID') && strlen(TIKTOK_ID) > 0) { ?> ttq.track('AddToCart'); <?php } ?>
+        setTimeout(function(){form.submit();}, 1000);
+    }});
 	$('.cos-listView a.cosTab').tabs();
 	// qty操作
 	qtyAction();

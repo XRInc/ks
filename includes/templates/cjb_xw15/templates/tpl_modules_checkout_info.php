@@ -53,27 +53,16 @@ same_as_billing();
 newAddress('billing');
 newAddress('shipping');
 	$('.shoppingcartBody').append('<div class="masking-layer" style="display: none;"><div><img src="<?php echo DIR_WS_TEMPLATE_IMAGES; ?>load.gif?v1"/><br/><?php echo __('Processing, please wait...'); ?></div></div>');
-	<?php if (defined('FACEBOOK_ID') && strlen(FACEBOOK_ID) > 0) { ?>
 	$('#form-validate').validate({
-		submitHandler: function(form){
-			if($('#form-validate').valid()) {
-				$('html').addClass('noscroll');
-				$('.masking-layer').show();
-				$('.shoppingcartBody').on('touchmove', function (event) { event.preventDefault(); });
-			}
-			fbq('track', 'InitiateCheckout');setTimeout(function(){form.submit();}, 1000);
+	submitHandler: function(form){
+		if($('#form-validate').valid()) {
+			$('html').addClass('noscroll');
+			$('.masking-layer').show();
+			$('.shoppingcartBody').on('touchmove', function (event) { event.preventDefault(); });
 		}
-	});
-	<?php } else { ?>
-	$('#form-validate').validate({
-		submitHandler: function(form) {
-			if($('#form-validate').valid()) {
-				$('html').addClass('noscroll');
-				$('.masking-layer').show();
-				$('.shoppingcartBody').on('touchmove', function (event) { event.preventDefault(); });
-			}
-			form.submit();
-		}
-	});
-	<?php } ?>
+        <?php if (defined('FACEBOOK_ID') && strlen(FACEBOOK_ID) > 0) { ?> fbq('track', 'InitiateCheckout'); <?php } ?>
+        <?php if (defined('TIKTOK_ID') && strlen(TIKTOK_ID) > 0) { ?> ttq.track('InitiateCheckout'); <?php } ?>
+        setTimeout(function(){form.submit();}, 1000);
+	}
+});
 //--></script>

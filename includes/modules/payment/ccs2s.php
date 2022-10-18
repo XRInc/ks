@@ -15,19 +15,20 @@ class ccs2s
             $yearStr .= '<option value="' . substr($year + $i, -2, 2) . '">' . substr($year + $i, -2, 2) . '</option>';
         }
 
-        $txtCardNumber = __('Card Number');
-        $txtCVC        = __('CVV');
-        $v             = DIR_WS_TEMPLATE_IMAGES . 'v.png';
-        $m             = DIR_WS_TEMPLATE_IMAGES . 'm.png';
-        $j             = DIR_WS_TEMPLATE_IMAGES . 'j.png';
-        $a             = DIR_WS_TEMPLATE_IMAGES . 'a.png';
-        $vmj           = DIR_WS_TEMPLATE_IMAGES . 'vmj.png';
-        $security      = DIR_WS_TEMPLATE_IMAGES . 'security.jpg';
+		$txtCardNumber = __('Card Number');
+		$txtCVC        = __('CVV');
+		$v             = DIR_WS_CATALOG_IMAGES . 'payment/icon/v.png';
+		$m             = DIR_WS_CATALOG_IMAGES . 'payment/icon/m.png';
+		$j             = DIR_WS_CATALOG_IMAGES . 'payment/icon/j.png';
+		$a             = DIR_WS_CATALOG_IMAGES . 'payment/icon/a.png';
+		$vmj           = DIR_WS_CATALOG_IMAGES . 'payment/icon/vmj.png';
+		$cvv           = DIR_WS_CATALOG_IMAGES . 'payment/icon/cvv.png';
+		$security      = DIR_WS_CATALOG_IMAGES . 'payment/icon/security.jpg';
         $notesTitle    = __('Notes');
         $notesContent  = __('You are now connected to a secure payment site with certificate issued by VeriSign, Your payment details will be securely transmitted to the Bank for transaction authorization in full accordance with PCI standards.');
 
         $html = <<<HTML
-<ul class="inside-payform">
+<ul class="inside-payform inside-payform-ccs">
     <li class="field-card form-group">
         <div class="input-box">
             <input type="tel" class="form-control input-text required-entry creditcard" name="ccscheckout_card[number]" id="ccTxtCardNumber" maxLength="16" onkeyup="ccsCheckCardNumber();" oninput="ccsCheckCardNumber();" placeholder="$txtCardNumber" />
@@ -39,7 +40,10 @@ class ccs2s
         <select class="form-control required-entry" name="ccscheckout_card[year]">$yearStr</select>
     </li>
     <li class="field-cvv form-group">
-        <input type="tel" class="form-control input-text required-entry digits" name="ccscheckout_card[cvv]" id="txtCardCVV" minLength="3" maxLength="4" onkeyup="this.value=this.value.replace(/\D/g,'')" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="$txtCVC"/>
+    	<div class="input-box">
+    		<input type="tel" class="form-control input-text required-entry digits" name="ccscheckout_card[cvv]" minLength="3" maxLength="4" onkeyup="this.value=this.value.replace(/\D/g,'')" oninput="this.value=this.value.replace(/\D/g,'')" placeholder="$txtCVC"/>
+     	</div>
+     	<span class="brand brand-cvv"></span>
     </li>
     <li class="field-notes">
         <div class="title">$notesTitle</div>
@@ -47,6 +51,28 @@ class ccs2s
         <img src="$security" />
     </li>
 </ul>
+<style type="text/css">
+.inside-payform.inside-payform-ccs li.field-card,
+.inside-payform.inside-payform-ccs li.field-date,
+.inside-payform.inside-payform-ccs li.field-cvv {border: 1px solid #e3e8ee; margin-bottom: 10px; position: relative; height: 44px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}
+.inside-payform.inside-payform-ccs li.field-card,
+.inside-payform.inside-payform-ccs li.field-cvv {border-radius: 5px;}
+.inside-payform.inside-payform-ccs li .input-box {position: absolute; height: 32px; width: auto; left: 11px; top: 5px; right: 40px; margin-top: 0; z-index: 1;}
+.inside-payform.inside-payform-ccs li.field-date {border: none;}
+.inside-payform.inside-payform-ccs li select {float:left;width:50%;padding:3px 0;border:none;box-shadow:none;color:#32325d;line-height:24px;font-size:14px;height:30px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+.inside-payform.inside-payform-ccs li.field-date .form-control {padding: 0 23px; height: 44px; line-height: 42px; width: 49%; margin-right: 2%; border: 1px solid #e3e8ee; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border-radius: 5px;}
+.inside-payform.inside-payform-ccs li.field-date .form-control:last-child {margin-right: 0;}
+.inside-payform.inside-payform-ccs li .form-control.valid {border: none !important; background: none !important;}
+.inside-payform.inside-payform-ccs li.field-date .form-control.valid {border: 1px solid #e3e8ee !important;}
+.inside-payform.inside-payform-ccs input,
+.inside-payform.inside-payform-ccs input:focus,
+.inside-payform.inside-payform-ccs select,
+.inside-payform.inside-payform-ccs select:focus {background-color: transparent; background-image: none; border: none; outline: 0 none;}
+.inside-payform.inside-payform-ccs li input.input-text {color: #32325d; line-height: 32px; font-size: 14px; width: 100%; height: 32px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; box-shadow: none;}
+.inside-payform.inside-payform-ccs li .brand {position:absolute;top:11px;right:5px;display:block;margin-top:5px;width:32px;height:32px;background-repeat:no-repeat;background-position:center center;background-size:80%;z-index:2;}
+.inside-payform.inside-payform-ccs li .brand.brand-card {background-image: url("$vmj"); top: 5px; margin-top: 0;}
+.inside-payform.inside-payform-ccs li .brand.brand-cvv {background-image: url("$cvv"); top: 5px; margin-top: 0;}
+</style>
 <script type="text/javascript">
 function ccsCheckCardNumber(){
     var txtCardNumber = document.getElementById('ccTxtCardNumber'),
@@ -180,7 +206,7 @@ HTML;
         // 获取国家信息
         $billCountryIso = get_country_iso($orderInfo['billing']['country_id']);
         $shipCountryIso = get_country_iso($orderInfo['shipping']['country_id']);
-		
+
         // 风控信息
         $riskInfo = array(
             'adjustment_factor' => '',
@@ -192,7 +218,7 @@ HTML;
             'device'            => array(
                 'finger_print_id' => '',
                 'user_agent'      => $_SERVER['HTTP_USER_AGENT'],
-                'accept_lang'     => empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? "en-US,en;q=0.9" : $_SERVER['HTTP_ACCEPT_LANGUAGE']
+				'accept_lang'     => !empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : 'en-US,en;q=0.9'
             ),
             'cust'              => array(
                 'register_user_id'   => isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : '',
@@ -218,7 +244,7 @@ HTML;
                 'phone'                    => $orderInfo['shipping']['telephone'],
                 'address'                  => $orderInfo['shipping']['street_address'],
                 'city'                     => $orderInfo['shipping']['city'],
-                'state'                    => $orderInfo['shipping']['region'],
+                'state'                    => !empty($orderInfo['shipping']['region']) ? $orderInfo['shipping']['region'] : $orderInfo['shipping']['city'],
                 'postcode'                 => $orderInfo['shipping']['postcode'],
                 'country'                  => $shipCountryIso['iso_code_2'],
                 'address_last_modify_time' => $lastModified,
@@ -231,7 +257,7 @@ HTML;
                 'phone'      => $orderInfo['billing']['telephone'],
                 'address'    => $orderInfo['billing']['street_address'],
                 'city'       => $orderInfo['billing']['city'],
-                'state'      => $orderInfo['billing']['region'],
+                'state'      => !empty($orderInfo['billing']['region']) ? $orderInfo['billing']['region'] : $orderInfo['billing']['city'],
                 'postcode'   => $orderInfo['billing']['postcode'],
                 'country'    => $billCountryIso['iso_code_2']
             )
@@ -250,7 +276,7 @@ HTML;
         $payMethodInfo['billing_desc'] = '';  // 动态卡账单 默认置空
 
         $payMethodInfo = json_encode($payMethodInfo);
-		
+
 		$tempUrl = trim($payment->get_mark2());
 		if (empty($tempUrl)) {
 			$tempUrl = $_SERVER['HTTP_HOST'];
@@ -286,7 +312,7 @@ HTML;
             'reserved'        => '',
             'sign_type'       => 'MD5',
         );
-		
+
         $md5key       = trim($payment->get_md5key());
         $md5Str       = $data['merchant_id'] . $data['business_id'] . $data['order_number'] . $data['trans_type'] . $data['trans_channel'] . $data['pay_method'] . $data['url'] . $data['currency'] . $data['amount'] . $data['settle_currency'] . $md5key;
         $data['sign'] = md5($md5Str);
@@ -298,7 +324,8 @@ HTML;
         if (isset($result['error']) && !empty($result['error'])) {
             redirect(href_link(FILENAME_CHECKOUT_RESULT, '', 'SSL'));
         } else {
-            if ($result['status'] == '2') {
+        	// 修复订单处理中, 直接返回失败导致显示错误问题
+            if ($result['status'] == '2' || $result['resp_code'] == '3200') {
                 $result['pay_method_resp'] = json_decode($result['pay_method_resp'], true);
 
                 if ($result['pay_method_resp']['is_redirect'] == '1') {
@@ -306,7 +333,7 @@ HTML;
                     die;
                 }
             }
-			
+
             // 拼接form表单字符串
             $paymentForm = '<form method="post" action="' . href_link(FILENAME_CHECKOUT_RESULT, '', 'SSL') . '" id="checkout" name="checkout" target="_top">' . "\n";
 
@@ -322,7 +349,7 @@ HTML;
             $paymentForm .= '</script>' . "\n";
 
             echo $paymentForm;
-			
+
             die;
         }
     }
@@ -343,7 +370,7 @@ HTML;
                 'trans_channel'     => '',
                 'original_order_id' => $_REQUEST['order_id'],
                 'trans_type'        => 'capture',
-                'amount'            => '',
+				'amount'            => $_REQUEST['amount'], // 修改: 请款金额
                 'notify_url'        => '',
                 'req_reserved'      => '',
                 'reserved'          => '',
@@ -358,17 +385,36 @@ HTML;
             $sign = $captureResult['sign'];
             unset($captureResult['sign']);
 
+			// 添加: 去除 capture 返回的 order_number (order_number 不参与签名)
+			if ($captureResult['trans_type'] == 'capture' && !empty($captureResult['order_number'])){
+				unset($captureResult['order_number']);
+			}
+
             $signStr = implode('', $captureResult) . $md5key;
 
-            if (strtoupper(md5($signStr)) == strtoupper($sign)) {
+			// 添加: 判断 capture 返回状态是否成功
+			// if (strtoupper(md5($signStr)) == strtoupper($sign)){
+            if (strtoupper(md5($signStr)) == strtoupper($sign) && $captureResult['status'] == '1') {
                 $result['order_status_id'] = 3;
+				$result['remarks']         = 'Transaction Approved';
             } else {
                 $result['order_status_id'] = 4;
-                $result['remarks']         = 'risk:' . $_REQUEST['risk_result'];
+                $result['remarks']         = 'Invalid Transaction';
             }
-        } else {
+        }
+        // 修复订单处理中, 直接返回失败导致显示错误问题
+        elseif ($_REQUEST['resp_code'] == '3200') {
+			$_REQUEST['pay_method_resp'] = json_decode($_REQUEST['pay_method_resp'], true);
+
+			if ($_REQUEST['pay_method_resp']['is_redirect'] == '0') {
+				$result['order_status_id'] = 2;
+			} else {
+				$result['order_status_id'] = 4;
+				$result['remarks']         = 'Invalid Transaction';
+			}
+		} else {
             $result['order_status_id'] = 4;
-            $result['remarks']         = 'risk:' . $_REQUEST['risk_result'];
+            $result['remarks']         = 'Invalid Transaction';
         }
 
         return $result;

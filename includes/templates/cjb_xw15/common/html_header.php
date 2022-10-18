@@ -2,6 +2,40 @@
 <!DOCTYPE html>
 <html xml:lang="<?php echo STORE_LANGUAGE; ?>" lang="<?php echo STORE_LANGUAGE; ?>">
 <head>
+    <?php if (defined('TIKTOK_ID') && strlen(TIKTOK_ID) > 0) { ?>
+        <!-- Tiktok Pixel Code -->
+        <script>
+            !function (w, d, t) {
+                w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+
+                <?php $ttId = explode(',',TIKTOK_ID); ?>
+                <?php foreach ($ttId as $val) { ?>
+                <?php if (!isset($val)) continue; ?>
+                ttq.load('<?php echo $val; ?>');
+                <?php } ?>
+
+                ttq.page();
+                <?php switch ($current_page) {
+                case FILENAME_PRODUCT:
+                    echo "ttq.track('ViewContent');";
+                    break;
+                case FILENAME_ACCOUNT:
+                    echo isset($_GET['success']) ? "ttq.track('CompleteRegistration');" : "";
+                    break;
+                case 'checkout_result':
+                    if (defined('ORDER_TEST_BTN') && ORDER_TEST_BTN == '1') {
+                        echo "ttq.track('CompletePayment', {content_id: '" . $orderInfo['order_id'] . "', value: '" . $currencies->get_price($orderInfo['order_total'], $orderInfo['currency']['code'], $orderInfo['currency']['value']) . "', currency: '" . $orderInfo['currency']['code'] . "'});";
+                    } else {
+                        if ($orderInfo['order_status_id'] == 3
+                            && !isset($_GET['order_token'])) {
+                            echo "ttq.track('CompletePayment', {content_id: '" . $orderInfo['order_id'] . "', value: '" . $currencies->get_price($orderInfo['order_total'], $orderInfo['currency']['code'], $orderInfo['currency']['value']) . "', currency: '" . $orderInfo['currency']['code'] . "'});";
+                        }
+                    }
+            } ?>
+            }(window, document, 'ttq');
+        </script>
+        <!-- End Tiktok Pixel Code -->
+    <?php } ?>
 	<?php if (defined('FACEBOOK_ID') && strlen(FACEBOOK_ID) > 0) { ?>
 	<!-- Facebook Pixel Code -->
 	<script>

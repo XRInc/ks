@@ -12,19 +12,26 @@ if (isset($_POST['action'])
 	$contact_name = $_POST['contact_name'];
 	$email = $_POST['email_address'];
 	$message = $_POST['message'];
+	$customerIP = !empty($_SESSION['customer_ip_address']) ? $_SESSION['customer_ip_address'] : '';
 	$sendBody = <<<HTML
 <ul>
 	<li class="fields" style="list-style: none">From: $contact_name</li>
+	<li class="fields" style="list-style: none">IP: $customerIP</li>
 	<li class="fields" style="list-style: none">Email: $email</li>
 	<li class="fields" style="list-style: none">$message</li>
 </ul>
 HTML;
-	if (send_email(STORE_EMAIL, STORE_NAME, $_POST['email_address'], $_POST['contact_name'], $sendSubject, $sendBody)) {
-		$message_stack->add_session('cms_page', __('Your message has been successfully sent.'), 'success');
+	if (IS_ZP != 0 && (strpos($message, 'https://') !== false)) {
+		$message_stack->add_session('cms_page', __('Your message has been unsuccessfully sent.'), 'error');
+		redirect(href_link(FILENAME_CMS_PAGE, 'cpID=' . $_GET['cpID']));
+	} else {
+		if (send_email(STORE_EMAIL, STORE_NAME, $_POST['email_address'], $_POST['contact_name'], $sendSubject, $sendBody)) {
+			$message_stack->add_session('cms_page', __('Your message has been successfully sent.'), 'success');
+			redirect(href_link(FILENAME_CMS_PAGE, 'cpID=' . $_GET['cpID']));
+		}
+		$message_stack->add_session('cms_page', __('Your message has been unsuccessfully sent.'), 'error');
 		redirect(href_link(FILENAME_CMS_PAGE, 'cpID=' . $_GET['cpID']));
 	}
-	$message_stack->add_session('cms_page', __('Your message has been unsuccessfully sent.'), 'error');
-	redirect(href_link(FILENAME_CMS_PAGE, 'cpID=' . $_GET['cpID']));
 }
 $sql = "SELECT cms_page_id, name, meta_title,
 			   meta_keywords, meta_description, content
